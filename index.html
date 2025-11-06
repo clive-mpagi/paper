@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clive Web Studio | Modern Web Design & Portfolio</title>
+  <meta name="description" content="Clive Web Studio offers modern, responsive, and professional website design services for small businesses and individuals.">
+  <meta name="keywords" content="Web design, responsive website, portfolio, Toronto, web developer, Clive Web Studio">
+  <meta name="author" content="Clive Web Studio">
+  <style>
+    /* General Styles */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:"Poppins", sans-serif; scroll-behavior:smooth; }
+    body { background-color:#f8f9fb; color:#333; line-height:1.6; }
+
+    /* Navigation */
+    nav { background:#fff; display:flex; justify-content:space-between; align-items:center; padding:1rem 5%; position:fixed; width:100%; top:0; z-index:100; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+    nav h1 { color:#007bff; font-size:1.5rem; cursor:pointer; }
+    nav ul { list-style:none; display:flex; gap:1.5rem; }
+    nav a { text-decoration:none; color:#333; font-weight:500; transition:0.3s; }
+    nav a:hover { color:#007bff; }
+
+    /* Hamburger */
+    .menu-toggle { display:none; flex-direction:column; cursor:pointer; }
+    .menu-toggle span { height:3px; width:25px; background:#333; margin:4px 0; transition:0.3s; }
+    .nav-links.active { display:block; position:absolute; top:70px; right:5%; background:#fff; width:200px; box-shadow:0 5px 10px rgba(0,0,0,0.1); border-radius:10px; text-align:center; }
+    .nav-links.active li { padding:1rem 0; }
+    @media(max-width:768px){ .nav-links { display:none; flex-direction:column; } .menu-toggle { display:flex; } }
+
+    /* Hero */
+    header { background:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url("https://images.pexels.com/photos/4974922/pexels-photo-4974922.jpeg"); background-size:cover; background-position:center; color:white; text-align:center; padding:8rem 1rem 6rem; margin-top:70px; }
+    header h2 { font-size:2.5rem; margin-bottom:1rem; }
+    header p { font-size:1.2rem; margin-bottom:2rem; }
+    .cta-button { background-color:#ffcc00; color:#333; padding:1rem 2rem; border:none; border-radius:25px; font-weight:bold; font-size:1rem; cursor:pointer; transition:0.3s; }
+    .cta-button:hover { background-color:#ffc107; transform:scale(1.05); }
+
+    /* Sections */
+    section { padding:4rem 5%; max-width:1100px; margin:auto; }
+    section h2 { text-align:center; color:#007bff; margin-bottom:1rem; font-size:2rem; }
+
+    /* About */
+    .about { display:flex; flex-wrap:wrap; align-items:center; gap:2rem; }
+    .about img { flex:1; max-width:450px; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+    .about-text { flex:1; min-width:300px; }
+    .about-text p { font-size:1rem; margin-bottom:1rem; }
+
+    /* Cards (Services/Projects) */
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:2rem; margin-top:2rem; }
+    .card { background:#fff; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.1); overflow:hidden; transition:transform 0.3s ease; position:relative; }
+    .card:hover { transform:translateY(-5px); }
+    .card img { width:100%; height:180px; object-fit:cover; }
+    .card h3 { color:#007bff; margin:1rem 1rem 0.5rem; }
+    .card p { padding:0 1rem 1rem; }
+    .view-button { display:block; margin:0 1rem 1rem; padding:0.5rem 1rem; background:#007bff; color:white; text-align:center; border-radius:25px; text-decoration:none; cursor:pointer; transition:0.3s; }
+    .view-button:hover { background:#0056b3; }
+
+    /* Contact Form */
+    .contact form { max-width:600px; margin:2rem auto 0; background:#fff; padding:2rem; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+    form input, form textarea { width:100%; padding:0.8rem; margin-bottom:1rem; border:1px solid #ccc; border-radius:10px; font-size:1rem; }
+    form button { background-color:#007bff; color:white; border:none; padding:1rem 2rem; border-radius:25px; cursor:pointer; font-weight:bold; transition:0.3s; }
+    form button:hover { background-color:#0056b3; }
+
+    /* Footer */
+    footer { background:#222; color:white; text-align:center; padding:2rem 1rem; margin-top:3rem; }
+    footer a { color:#ffcc00; text-decoration:none; font-weight:bold; }
+    footer a:hover { text-decoration:underline; }
+
+    /* Modal */
+    .modal { display:none; position:fixed; z-index:200; padding-top:100px; left:0; top:0; width:100%; height:100%; overflow:auto; background:rgba(0,0,0,0.8); }
+    .modal-content { background:#fff; margin:auto; padding:1rem; border-radius:15px; max-width:800px; position:relative; }
+    .close { color:#333; position:absolute; top:10px; right:20px; font-size:2rem; cursor:pointer; }
+    .carousel { position:relative; overflow:hidden; border-radius:15px; }
+    .carousel img { width:100%; display:none; border-radius:10px; }
+    .carousel img.active { display:block; }
+    .carousel-button { position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.5); color:white; border:none; padding:0.5rem 1rem; cursor:pointer; border-radius:5px; }
+    .carousel-button.left { left:10px; }
+    .carousel-button.right { right:10px; }
+
+    @media(max-width:768px){ header h2{ font-size:2rem; } .about{ flex-direction:column; text-align:center; } }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <h1 onclick="document.querySelector('#home').scrollIntoView({behavior:'smooth'})">Let Us Create The Future!</h1>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="menu-toggle" id="menu-toggle">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header id="home">
+    <h2>Modern & Affordable <strong style="color:#007bff">Website Design</strong> </h2>
+    <p>Helping small businesses shine online with clean, fast, and mobile-friendly websites.</p>
+    <button class="cta-button" onclick="document.querySelector('#contact').scrollIntoView({behavior:'smooth'})">Get Your Website</button>
+  </header>
+
+  <!-- About -->
+  <section id="about">
+    <h2>About Me</h2>
+    <div class="about">
+      <img src="https://images.pexels.com/photos/4974916/pexels-photo-4974916.jpeg" alt="Clive Web Studio About Me">
+      <div class="about-text">
+        <p>Hello! I’m <strong style="color: #ffc107;">Clive</strong>, a passionate web designer creating responsive, modern websites for small businesses and individuals.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services">
+    <h2>My Services</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=800&q=80" alt="Web Design Service">
+        <h3>Web Design</h3>
+        <p>Custom-designed websites that are modern, beautiful, and easy to navigate.</p>
+        <div class="view-button" data-modal="service1">View More</div>
+      </div>
+
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" alt="Website Maintenance">
+        <h3>Website Maintenance</h3>
+        <p>Regular updates, speed improvements, and security monitoring.</p>
+        <div class="view-button" data-modal="service2">View More</div>
+      </div>
+
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=800&q=80" alt="SEO Setup">
+        <h3>SEO Setup</h3>
+        <p>Optimize your site so people can easily find your business on Google.</p>
+        <div class="view-button" data-modal="service3">View More</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects">
+    <h2>My Projects</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80" alt="Cleaning Service Project">
+        <h3>Home Center Cleaning Services</h3>
+        <p>Modern website for a local cleaning business.</p>
+        <div class="view-button" data-modal="project1">View More</div>
+      </div>
+
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80" alt="Fashion Project">
+        <h3>Rina Collection Store</h3>
+        <p>Elegant online store for plus-size fashion.</p>
+        <div class="view-button" data-modal="project2">View More</div>
+      </div>
+
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1606788075761-1c0e9e7b6d3b?auto=format&fit=crop&w=800&q=80" alt="Farm Project">
+        <h3>Home of the Food Farm</h3>
+        <p>Colorful farm website showcasing fresh produce.</p>
+        <div class="view-button" data-modal="project3">View More</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="contact">
+    <h2>Contact Me</h2>
+    <form action="https://formspree.io/f/mwkzyzoy" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <textarea name="message" rows="5" placeholder="Tell me about your project..." required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p> Toronto, ON |  <a href="mailto:mpagiclive50@gmail.com">mpagiclive50@gmail.com</a></p>
+    <p>&copy; 2025 Clive Web Studio. All rights reserved.</p>
+  </footer>
+
+  <!-- Modal Templates -->
+  <div id="service1" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Web Design</h3>
+      <div class="carousel">
+        <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=800&q=80" class="active">
+        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=800&q=80">
+      </div>
+      <p>Professional web design services to create responsive and modern websites that work on all devices.</p>
+    </div>
+  </div>
+
+  <div id="service2" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Website Maintenance</h3>
+      <div class="carousel">
+        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" class="active">
+        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=800&q=80">
+      </div>
+      <p>Keep your website updated, secure, and fast with regular maintenance services.</p>
+    </div>
+  </div>
+
+  <div id="service3" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>SEO Setup</h3>
+      <div class="carousel">
+        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=800&q=80" class="active">
+        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80">
+      </div>
+      <p>Optimize your website to rank better on Google and reach more customers.</p>
+    </div>
+  </div>
+
+  <!-- Project Modals -->
+  <div id="project1" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Home Center Cleaning Services</h3>
+      <div class="carousel">
+        <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80" class="active">
+        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80">
+      </div>
+      <p>Modern, mobile-friendly website for a local cleaning business in Toronto.</p>
+    </div>
+  </div>
+
+  <div id="project2" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Rina Collection Store</h3>
+      <div class="carousel">
+        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80" class="active">
+        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=800&q=80">
+      </div>
+      <p>Elegant online store for plus-size fashion with a modern layout and shopping functionality.</p>
+    </div>
+  </div>
+
+  <div id="project3" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Home of the Food Farm</h3>
+      <div class="carousel">
+        <img src="https://images.unsplash.com/photo-1606788075761-1c0e9e7b6d3b?auto=format&fit=crop&w=800&q=80" class="active">
+        <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80">
+      </div>
+      <p>Colorful farm website showcasing fresh produce and livestock, designed to attract local customers.</p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // Hamburger Menu
+    const menuToggle = document.getElementById('menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    menuToggle.addEventListener('click', () => { navLinks.classList.toggle('active'); });
+
+    // Modal & Carousel Functionality
+    const viewButtons = document.querySelectorAll('.view-button');
+    const modals = document.querySelectorAll('.modal');
+    const closeButtons = document.querySelectorAll('.close');
+
+    viewButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const modal = document.getElementById(btn.dataset.modal);
+        modal.style.display = 'block';
+      });
+    });
+
+    closeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.closest('.modal').style.display = 'none';
+      });
+    });
+
+    window.addEventListener('click', e => {
+      modals.forEach(modal => {
+        if(e.target === modal) modal.style.display = 'none';
+      });
+    });
+
+    // Carousel Functionality
+    const carousels = document.querySelectorAll('.carousel');
+    carousels.forEach(carousel => {
+      let index = 0;
+      const images = carousel.querySelectorAll('img');
+      const leftBtn = document.createElement('button');
+      const rightBtn = document.createElement('button');
+      leftBtn.innerHTML = '&#10094;'; rightBtn.innerHTML = '&#10095;';
+      leftBtn.classList.add('carousel-button','left'); rightBtn.classList.add('carousel-button','right');
+      carousel.appendChild(leftBtn); carousel.appendChild(rightBtn);
+
+      leftBtn.addEventListener('click', () => {
+        images[index].classList.remove('active');
+        index = (index-1+images.length)%images.length;
+        images[index].classList.add('active');
+      });
+
+      rightBtn.addEventListener('click', () => {
+        images[index].classList.remove('active');
+        index = (index+1)%images.length;
+        images[index].classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
